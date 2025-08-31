@@ -9,7 +9,8 @@ root = pyrootutils.setup_root(
     dotenv=True
 )
 
-import os, json, string, warnings, argparse, copy
+import os, json, string, warnings, argparse, copy, re
+from typing import List, Optional, Union
 import wget
 from tqdm import tqdm
 import numpy as np
@@ -145,15 +146,54 @@ def extract_lig_seq(pdb_path, chain_id):
     return "".join(seq)
 
 
-def _split_annots(val):
+def _split_annots(val: Union[str, List[str], None]) -> Optional[List[str]]:
+    """
+    Split residue annotations with robustness to spaces, commas, and hyphens.
+
+    - None -> None
+    - List[str] -> stripped strings (empties removed)
+    - If the string contains at least one comma, commas define items. Within each item:
+        * Expand ranges like 'B58-59' or 'B71-73' (inclusive). The second prefix may be omitted.
+        * If a hyphen doesn't form a clean two-end range (e.g., 'B58-59-60' or mismatched prefixes),
+          treat '-' as a simple separator inside that item.
+    - If the string has no commas, hyphens are treated purely as separators (no range expansion),
+      matching the legacy form 'B40-B58-B59-...'.
+    """
     if val is None:
         return None
     if isinstance(val, list):
-        return [s.strip() for s in val]
-    for sep in ("-", ","):
-        if sep in str(val):
-            return [s.strip() for s in str(val).split(sep) if s.strip()]
-    return [str(val).strip()]
+        return [str(s).strip() for s in val if str(s).strip()]
+
+    s = str(val).strip()
+    if not s:
+        return []
+
+    comma_mode = ',' in s
+    splitter = ',' if comma_mode else '-'
+    top_tokens = [t.strip() for t in s.split(splitter) if t.strip()]
+
+    out: List[str] = []
+    if comma_mode:
+        for tok in top_tokens:
+            # Try to expand ranges like "B58-59" or "B71-73"
+            m = re.fullmatch(r'([A-Za-z]*)(\d+)\s*-\s*([A-Za-z]*)(\d+)', tok)
+            if m:
+                p1, n1, p2, n2 = m.groups()
+                # Expand when prefixes match or one side omits the prefix (including numeric-only ranges)
+                if (p1 == p2) or (p1 and not p2) or (p2 and not p1) or (not p1 and not p2):
+                    prefix = p1 or p2
+                    a, b = int(n1), int(n2)
+                    step = 1 if a <= b else -1
+                    for i in range(a, b + step, step):
+                        out.append(f"{prefix}{i}" if prefix else f"{i}")
+                    continue
+            # Not a clean two-end range -> split by hyphen as simple separators
+            out.extend([p.strip() for p in re.split(r'\s*-\s*', tok) if p.strip()])
+    else:
+        # Legacy: hyphen is just a separator
+        out = top_tokens
+
+    return out
 
 
 def normalize_receptor_inputs(file_path, receptor_info_path=None, peptide_dict=None):

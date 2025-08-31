@@ -26,8 +26,6 @@ import torch
 
 from torch.nn import DataParallel as DP
 import torch.nn.functional as F
-from torch.nn.parallel import DistributedDataParallel as DDP
-import torch.distributed as dist
 from openfold.utils import rigid_utils
 from hydra.core.hydra_config import HydraConfig
 

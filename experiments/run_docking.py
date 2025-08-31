@@ -21,8 +21,6 @@ import torch
 from collections import defaultdict
 
 from torch.nn import DataParallel as DP
-from torch.nn.parallel import DistributedDataParallel as DDP
-import torch.distributed as dist
 from hydra.core.hydra_config import HydraConfig
 from omegaconf import DictConfig
 from openfold.utils import rigid_utils

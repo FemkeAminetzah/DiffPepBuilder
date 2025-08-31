@@ -62,7 +62,16 @@ wget https://zenodo.org/records/12794439/files/diffpepbuilder_v1.pth
 mv diffpepbuilder_v1.pth experiments/checkpoints/
 ```
 
-We provide an example of the target ALK1 (Activin Receptor-like Kinase 1, PDB ID: [6SF1](https://www.rcsb.org/structure/6SF1)) to demonstrate the procedures of generating peptide binders. Please note that the following pipeline can also be used to generate peptide binders for multiple targets simultaneously. The hotspots or binding motif of the target protein can be specified in JSON format, as showcased by the example file `examples/receptor_data/de_novo_cases.json`. To preprocess the receptor, run the `experiments/process_receptor.py` script:
+We provide an example of the target ALK1 (Activin Receptor-like Kinase 1, PDB ID: [6SF1](https://www.rcsb.org/structure/6SF1)) to demonstrate the procedures of generating peptide binders. Binding hotspots or motifs of the target protein can be specified in JSON format as comma-separated residue IDs, as showcased in the example file `examples/receptor_data/de_novo_cases.json`. The following input formats are supported:
+
+| Syntax               | Description                                           | Example string        | Conceptual expansion         |
+| -------------------- | ----------------------------------------------------- | --------------------- | --------------------------------- |
+| Single residue       | One residue ID                                        | `B40`                 | `["B40"]`                         |
+| Comma-separated list | Multiple discrete residues                            | `B40, B58, B71`       | `["B40","B58","B71"]`             |
+| Dash-connected range | Inclusive sequence within the same chain/prefix       | `B58-60`              | `["B58","B59","B60"]`             |
+| Mixed list           | Commas separate items; items may be singles or ranges | `B40, B58-59, B71-72` | `["B40","B58","B59","B71","B72"]` |
+
+To preprocess the receptor, run the `experiments/process_receptor.py` script:
 
 ```bash
 python experiments/process_receptor.py --pdb_dir examples/receptor_data --write_dir data/receptor_data --receptor_info_path examples/receptor_data/de_novo_cases.json
