@@ -218,11 +218,11 @@ def _extract_fields(p: str) -> dict:
                 root_dir_path = Path(".").resolve()
 
     stem = path.name
-    m = re.match(r'^([^_]+)_(.+?)_sample_(\d+)(?:\.\w+)?$', stem)
+    m = re.match(r'^([^_]+)_(.+?)_sample_(\d+)(?:_(ss))?(?:_final)?(?:\.\w+)?$', stem)
     target_from_file = seq_from_file = None
     sample_id_val: Optional[int] = None
     if m:
-        target_from_file, seq_from_file, sample_id_str = m.groups()
+        target_from_file, seq_from_file, sample_id_str, ss_tag = m.groups()
         sample_id_val = int(sample_id_str)
 
     target_name = target_name_dir or target_from_file
@@ -230,12 +230,24 @@ def _extract_fields(p: str) -> dict:
 
     file_path = None
     if root_dir_path and target_name and seq_id and sample_id_val is not None:
-        file_path = (
+        candidate_final = (
             root_dir_path
             / target_name
             / seq_id
             / f"{target_name}_{seq_id}_sample_{sample_id_val}_final.pdb"
         )
+        candidate_ss_final = (
+            root_dir_path
+            / target_name
+            / seq_id
+            / f"{target_name}_{seq_id}_sample_{sample_id_val}_ss_final.pdb"
+        )
+        if candidate_final.exists():
+            file_path = candidate_final
+        elif candidate_ss_final.exists():
+            file_path = candidate_ss_final
+        else:
+            file_path = candidate_final
 
     return {
         "root_dir": str(root_dir_path) if root_dir_path else None,
