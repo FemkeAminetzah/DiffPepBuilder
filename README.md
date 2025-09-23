@@ -71,6 +71,8 @@ We provide an example of the target ALK1 (Activin Receptor-like Kinase 1, PDB ID
 | Dash-connected range | Inclusive sequence within the same chain/prefix       | `B58-60`              | `["B58","B59","B60"]`             |
 | Mixed list           | Commas separate items; items may be singles or ranges | `B40, B58-59, B71-72` | `["B40","B58","B59","B71","B72"]` |
 
+**Note**: please remove any underscores (`_`) from the receptor PDB file name, as the script interprets `_` as a delimiter.
+
 To preprocess the receptor, run the `experiments/process_receptor.py` script:
 
 ```bash
