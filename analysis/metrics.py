@@ -230,24 +230,9 @@ def _extract_fields(p: str) -> dict:
 
     file_path = None
     if root_dir_path and target_name and seq_id and sample_id_val is not None:
-        candidate_final = (
-            root_dir_path
-            / target_name
-            / seq_id
-            / f"{target_name}_{seq_id}_sample_{sample_id_val}_final.pdb"
-        )
-        candidate_ss_final = (
-            root_dir_path
-            / target_name
-            / seq_id
-            / f"{target_name}_{seq_id}_sample_{sample_id_val}_ss_final.pdb"
-        )
-        if candidate_final.exists():
-            file_path = candidate_final
-        elif candidate_ss_final.exists():
-            file_path = candidate_ss_final
-        else:
-            file_path = candidate_final
+        ss_part = "_ss" if ss_tag else ""
+        file_name = f"{target_name}_{seq_id}_sample_{sample_id_val}{ss_part}_final.pdb"
+        file_path = root_dir_path / target_name / seq_id / file_name
 
     return {
         "root_dir": str(root_dir_path) if root_dir_path else None,
