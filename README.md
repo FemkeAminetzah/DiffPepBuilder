@@ -1,12 +1,13 @@
-# Target-Specific *De Novo* Peptide Binder Design with DiffPepBuilder
+# *De Novo* Peptide Binder Design, Docking, and *In Silico* Screening using DiffPepBuilder and DiffPepDock
 
-This is the official repository for the [DiffPepBuilder](https://pubs.acs.org/doi/10.1021/acs.jcim.4c00975) and DiffPepDock tools.
+This is the official repository for the [DiffPepBuilder](https://pubs.acs.org/doi/10.1021/acs.jcim.4c00975) and [DiffPepDock](https://onlinelibrary.wiley.com/doi/10.1002/pro.70338) tools.
 
 ![plot](examples/figures/dpb_model.jpg)
 
 For any questions, please open an [issue](https://github.com/YuzheWangPKU/DiffPepBuilder/issues) or contact wangyuzhe_ccme@pku.edu.cn for more information.
 
 ## News
+* **[2025/10/14]** Our research article for DiffPepDock has been published in **Protein Science**! Explore the full paper [here](https://onlinelibrary.wiley.com/doi/10.1002/pro.70338). We have also comprehensively refactored the codebase to enhance usability and maintainability.
 * **[2025/5/18]** A [Colab demo](https://colab.research.google.com/github/YuzheWangPKU/DiffPepBuilder/blob/main/examples/DiffPepDock_demo.ipynb) for DiffPepDock is now available. Feel free to give it a try!
 * **[2025/5/14]** We've extended our method to protein–peptide docking with a derivative tool, DiffPepDock. The initial implementation and [model weights](https://zenodo.org/records/15398020) for the docking functionality have been publicly released.
 * **[2024/9/12]** Our research article for DiffPepBuilder has been published in **JCIM**! Dive into the details by checking out the full paper [here](https://pubs.acs.org/doi/10.1021/acs.jcim.4c00975) or on [arXiv](https://arxiv.org/abs/2405.00128).
@@ -190,7 +191,7 @@ torchrun --nproc-per-node=8 experiments/train.py --config-name=finetune
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Citation
-Please cite the following paper if you use this code in your research:
+Please cite the following paper(s) if you use this code in your research:
 ```
 @article{wang2024target,
   title={Target-Specific De Novo Peptide Binder Design with DiffPepBuilder},
@@ -202,6 +203,18 @@ Please cite the following paper if you use this code in your research:
   year={2024},
   publisher={ACS Publications},
   doi = {10.1021/acs.jcim.4c00975}
+}
+```
+```
+@article{wang2025diffpepdock,
+  title={DiffPepDock: Efficient Protein--Peptide Docking and Binder Screening via SE (3)-Equivariant Diffusion},
+  author={Wang, Yuzhe and Wang, Fanhao and Feng, Laiyi and Zhang, Changsheng and Lai, Luhua},
+  journal={Protein Science},
+  volume={34},
+  number={11},
+  pages={e70338},
+  year={2025},
+  publisher={Wiley Online Library}
 }
 ```
 
