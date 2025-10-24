@@ -15,7 +15,7 @@ data:
 experiment:
   name: inference
   
-  eval_batch_size: ${inference.sampling.samples_per_length}
+  eval_batch_size: 8
   num_loader_workers: 4
   use_ddp : True
   use_gpu: True
