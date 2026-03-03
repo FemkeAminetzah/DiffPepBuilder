@@ -1,62 +1,34 @@
-# Configuration for de novo peptide generation.
-
-defaults:
-  - eval
-  - _self_
-
 data:
-  # CSV for path and metadata to receptors.
-  val_csv_path: ${oc.env:BASE_PATH}/data/receptor_data/metadata_test.csv
-
-  # Add Gaussian noise to center position.
-  center_pos_noise: True
+  center_pos_noise: true
   center_pos_noise_std: 5.0
-
+  val_csv_path: ${oc.env:BASE_PATH}/data/receptor_data/metadata_test.csv
+defaults:
+- eval
+- _self_
 experiment:
-  name: inference
-  
   eval_batch_size: 8
-  num_loader_workers: 4
-  use_ddp : True
-  use_gpu: True
-  num_gpus: 8
-
-  # Evaluation.
   eval_ckpt_path: ${oc.env:BASE_PATH}/experiments/checkpoints/diffpepbuilder_v1.pth
   eval_dir: ${oc.env:BASE_PATH}/runs
-
+  name: inference
+  num_gpus: 8
+  num_loader_workers: 4
+  use_ddp: true
+  use_gpu: true
 inference:
-  seed: 42
-
-  # Save the denoising trajectory.
-  save_traj: False
-
   denoising:
-    # Number of steps.
-    num_t: 200
-    # Analogous to sampling temperature.
-    noise_scale: 1.0
-    # Final t.
     min_t: 0.01
-
+    noise_scale: 1.0
+    num_t: 200
   sampling:
-    # Number of peptide backbone samples per sequence length.
-    samples_per_length: 8
-    # Minimum sequence length to sample.
-    min_length: 8
-    # Maximum sequence length to sample.
-    max_length: 30
-    # Sampling temperature.
+    max_length: 16
+    min_length: 12
+    samples_per_length: 4
     seq_temperature: 0.1
-
+  save_traj: false
+  seed: 42
   ss_bond:
-    # Calculate and save the entropy of each residue as B factors
-    save_entropy: True
-    # Build disulfide bonds
-    build_ss_bond: True
-    # Maximum number of SS bonds
-    max_ss_bond: 2
-    # Disulfide bond fragment library path
-    frag_lib_path: ${oc.env:BASE_PATH}/SSbuilder/SSBLIB
-    # b-factor threshold
+    build_ss_bond: true
     entropy_threshold: 0.01
+    frag_lib_path: ${oc.env:BASE_PATH}/SSbuilder/SSBLIB
+    max_ss_bond: 2
+    save_entropy: true
