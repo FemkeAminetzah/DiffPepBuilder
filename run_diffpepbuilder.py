@@ -15,7 +15,7 @@ CONFIG_PATH = DPB_DIR / "config" / "inference.yaml"
 
 def write_receptor_json(pdb_path: Path, hotspots=None, motif=None, lig_chain=None):
     test_dir = ROOT / "test_case"
-    test_dir.mkdir(exist_ok=True)
+    test_dir.mkdir(parents=True, exist_ok=True)
 
     key = pdb_path.stem
 
