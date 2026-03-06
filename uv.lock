@@ -10,6 +10,9 @@ supported-markers = [
     "sys_platform == 'darwin'",
 ]
 
+[manifest]
+overrides = [{ name = "openmm", marker = "sys_platform == 'darwin'" }]
+
 [[package]]
 name = "absl-py"
 version = "2.4.0"
@@ -207,6 +210,7 @@ dependencies = [
     { name = "mdtraj", marker = "sys_platform == 'darwin' or sys_platform == 'linux'" },
     { name = "ml-collections", marker = "sys_platform == 'darwin' or sys_platform == 'linux'" },
     { name = "numpy", marker = "sys_platform == 'darwin' or sys_platform == 'linux'" },
+    { name = "openmm", marker = "sys_platform == 'darwin'" },
     { name = "pandas", marker = "sys_platform == 'darwin' or sys_platform == 'linux'" },
     { name = "pdbfixer", marker = "sys_platform == 'darwin' or sys_platform == 'linux'" },
     { name = "py3dmol", marker = "sys_platform == 'darwin' or sys_platform == 'linux'" },
@@ -238,6 +242,7 @@ requires-dist = [
     { name = "mdtraj" },
     { name = "ml-collections", specifier = ">=1.1" },
     { name = "numpy", specifier = ">=1.26,<2" },
+    { name = "openmm", marker = "sys_platform == 'darwin'" },
     { name = "pandas", specifier = ">=2.3" },
     { name = "pdbfixer", specifier = ">=1.12" },
     { name = "py3dmol" },
@@ -767,12 +772,11 @@ name = "openmm"
 version = "8.4.0.post2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "numpy", marker = "sys_platform == 'darwin' or sys_platform == 'linux'" },
+    { name = "numpy", marker = "sys_platform == 'darwin'" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/dd/75/8aa4a2f989d35da193b1674be86a13504f1b368c9a419b80095fe04f6fad/openmm-8.4.0.post2-cp310-cp310-macosx_10_12_x86_64.whl", hash = "sha256:f5466e34b1201ac26a0bd41c8239a7a1849735bcba3c953e4524c1dd0e0015b6", size = 13228640, upload-time = "2025-11-24T21:40:48.893Z" },
     { url = "https://files.pythonhosted.org/packages/aa/02/8ac8f2949fcb8122c9afbfba2b6a57db4f6bf8b8fd180edf4a18522e7891/openmm-8.4.0.post2-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:4b918707cbdcf517a18d1122e45e5721e9d6ad57005dba5183334cb18765803a", size = 12742263, upload-time = "2025-11-24T21:40:53.807Z" },
-    { url = "https://files.pythonhosted.org/packages/6b/39/275dcf2099d6f28a6a9331aea9491b545dff9fc54984dea5c4bf28ee4a09/openmm-8.4.0.post2-cp310-cp310-manylinux_2_34_x86_64.whl", hash = "sha256:eaadcafd6839e7f61153808de66ef47b56c2f909193d86e2b107d77c64017494", size = 14248895, upload-time = "2025-11-24T21:41:00.416Z" },
 ]
 
 [[package]]
@@ -835,7 +839,7 @@ version = "1.12.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy", marker = "sys_platform == 'darwin' or sys_platform == 'linux'" },
-    { name = "openmm", marker = "sys_platform == 'darwin' or sys_platform == 'linux'" },
+    { name = "openmm", marker = "sys_platform == 'darwin'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/da/bd/394c3185e4b9fbacf803651a374e99e597d3411d316784f8ea6d8fc17af5/pdbfixer-1.12.0.tar.gz", hash = "sha256:82e54074b33eb00270e9a439c8633fcf82cd3ab7a36561b01425a260c0fc4143", size = 665893, upload-time = "2026-02-06T19:11:22.323Z" }
 
