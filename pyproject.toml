@@ -36,6 +36,14 @@ dependencies = [
     "pyrosetta-installer>=0.1.2",
 ]
 
+[tool.uv]
+environments = [
+  "sys_platform == 'linux'",
+  "sys_platform == 'darwin'"
+]
+
 [tool.uv.sources]
-# Updated to the x86_64 wheel
-pyrosetta = { url = "https://west.rosettacommons.org/pyrosetta/release/release/PyRosetta4.Release.python310.mac.cxx11thread.serialization.wheel/pyrosetta-2026.6+release.e5a76a2dbd-cp310-cp310-macosx_12_0_x86_64.whl" }
+pyrosetta = [
+  { url = "https://west.rosettacommons.org/pyrosetta/release/release/PyRosetta4.Release.python310.linux.cxx11thread.serialization.wheel/pyrosetta-2024.39%2Brelease.59628fb-cp310-cp310-linux_x86_64.whl", marker = "sys_platform == 'linux'" },
+  { url = "https://west.rosettacommons.org/pyrosetta/release/release/PyRosetta4.Release.python310.mac.cxx11thread.serialization.wheel/pyrosetta-2026.6+release.e5a76a2dbd-cp310-cp310-macosx_12_0_x86_64.whl", marker = "sys_platform == 'darwin'" }
+]
