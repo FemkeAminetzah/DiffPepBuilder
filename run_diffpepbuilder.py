@@ -14,7 +14,7 @@ CONFIG_PATH = DPB_DIR / "config" / "inference.yaml"
 
 
 def write_receptor_json(pdb_path: Path, hotspots=None, motif=None, lig_chain=None):
-    test_dir = ROOT / "test_case"
+    test_dir = ROOT / "test_case" / pdb_path.stem  # Gives each PDB its own folder
     test_dir.mkdir(parents=True, exist_ok=True)
 
     key = pdb_path.stem
@@ -65,20 +65,20 @@ def run_process_receptor(test_dir, json_path):
     subprocess.run(cmd, check=True)
 
 
-def run_inference():
+def run_inference(test_dir):  # pass test_dir as argument
     os.environ["BASE_PATH"] = str(DPB_DIR)
 
     cmd = [
         "torchrun",
         "--nproc-per-node=1",
         str(DPB_DIR / "experiments" / "run_inference.py"),
-        "data.val_csv_path=test_case/metadata_test.csv",
+        f"data.val_csv_path={test_dir.relative_to(DPB_DIR)}/metadata_test.csv",  # <-- fixed
         "experiment.use_ddp=False",
         "experiment.num_gpus=1",
         "experiment.num_loader_workers=1",
     ]
 
-    subprocess.run(cmd, check=True)
+    subprocess.run(cmd, check=True, cwd=DPB_DIR)
 
 
 def run_postprocess():
@@ -133,7 +133,7 @@ def main():
     run_process_receptor(test_dir, json_path)
 
     print("=== Running inference ===")
-    run_inference()
+    run_inference(test_dir)
 
     print("=== Running postprocess ===")
     run_postprocess()
